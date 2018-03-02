@@ -1,12 +1,12 @@
 #include <QApplication>
 
-#include <dialog.h>
 #include <board.h>
+#include <dialog.h>
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
+int main(int argc, char* argv[]) {
+  QApplication app(argc, argv);
 
-    Dialog *dialog = new Dialog();
-    dialog->show();
-    return app.exec();
+  Dialog* dialog = new Dialog();
+  dialog->show();
+  return app.exec();
 }

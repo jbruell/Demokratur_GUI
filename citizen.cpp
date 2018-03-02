@@ -1,17 +1,19 @@
 #include "citizen.h"
 
 Citizen::Citizen() {
-    party = 1;
+  party = 1;
 }
 
 Citizen::Citizen(int pParty) {
- party = pParty;
+  party = pParty;
 }
 
+Citizen::~Citizen() {}
+
 int Citizen::GetParty() {
-    return party;
+  return party;
 }
 
 void Citizen::SetParty(int pParty) {
-    party = pParty;
+  party = pParty;
 }

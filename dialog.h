@@ -1,8 +1,8 @@
 #ifndef DIALOG_H
 #define DIALOG_H
 
-#include <QDialog>
 #include <board.h>
+#include <QDialog>
 #include <QtWidgets>
 #include <iostream>
 
@@ -16,32 +16,32 @@ class QMenuBar;
 class QPushButton;
 class QTextEdit;
 
-class Dialog : public QDialog
-{
-    Q_OBJECT
+class Dialog : public QDialog {
+  Q_OBJECT
 
-public:
-    Dialog();
-    ~Dialog();
-    QLabel* getLabels();
-    void setLabels(QLabel *pLabels);
+ public:
+  Dialog();
+  ~Dialog();
+  QLabel* getLabels();
+  void setLabels(QLabel* pLabels);
 
-private:
-    void createHorizontalGroupBox();
-    void createVillageArea();
+ private:
+  void createHorizontalGroupBox();
+  void createVillageArea();
 
-    Board *board;
+  Board* board;
 
-    QGroupBox *horizontalGroupBox;
-    QGroupBox *villageGroupBox;
+  QGroupBox* horizontalGroupBox;
+  QGroupBox* villageGroupBox;
 
-    QLabel *labels;
-    QPushButton *buttons[2];
-    QLineEdit *lineEdits[2];
+  QLabel* labels;
+  QPushButton* buttons[2];
+  QLineEdit* lineEdits[2];
 
-    QAction *exitAction;
-protected:
-    void paintEvent(QPaintEvent *);
+  QAction* exitAction;
+
+ protected:
+  void paintEvent(QPaintEvent*);
 };
 
-#endif // DIALOG_H
+#endif  // DIALOG_H
