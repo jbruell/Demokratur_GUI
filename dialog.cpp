@@ -67,13 +67,13 @@ void Dialog::createHorizontalGroupBox() {
   layout->addWidget(buttons[1]);
 
   horizontalGroupBox->setLayout(layout);
-  std::cout << horizontalGroupBox->height() << std::endl;
+  horizontalGroupBox->setFixedHeight(58);
 }
 
 void Dialog::createVillageArea() {
   villageGroupBox = new QGroupBox("Dorf");
-  villageGroupBox->setFixedHeight(600);
-  villageGroupBox->setFixedWidth(600);
+  villageGroupBox->setMinimumHeight(600);
+  villageGroupBox->setMinimumWidth(600);
 }
 
 void Dialog::paintEvent(QPaintEvent*) {
