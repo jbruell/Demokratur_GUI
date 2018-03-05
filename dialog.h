@@ -3,6 +3,7 @@
 
 #include <board.h>
 #include <QDialog>
+#include <QObject>
 #include <QtWidgets>
 #include <iostream>
 
@@ -42,6 +43,14 @@ class Dialog : public QDialog {
 
  protected:
   void paintEvent(QPaintEvent*);
+
+ public slots:
+  void finished();
+  void repaint();
+
+ signals:
+  void triggerStart(int iterations);
+  void triggerStop();
 };
 
 #endif  // DIALOG_H

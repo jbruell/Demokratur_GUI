@@ -13,11 +13,6 @@ Dialog::Dialog() {
 
   setWindowTitle("Demokratur");
   update();
-
-  // TODO implement Observer pattern
-  //*******************
-  // https://sourcemaking.com/design_patterns/observer/cpp/3
-  //*******************
 }
 
 Dialog::~Dialog() {
@@ -51,12 +46,20 @@ void Dialog::createHorizontalGroupBox() {
   lineEdits[1]->setText("10");
   layout->addWidget(lineEdits[1]);
 
+  QObject::connect(this, SIGNAL(triggerStart(int)),
+                   SLOT(&Board::triggerStart(int)));
+
+  QObject::connect(this, SIGNAL(triggerStop()), SLOT(&Board::triggerStop()));
+
+  QObject::connect(board, SIGNAL(&Board::repaint()), SLOT(repaint()));
+
+  QObject::connect(board, SIGNAL(&Board::finished()), SLOT(finished()));
+
   buttons[0] = new QPushButton("Start");
   QObject::connect(buttons[0], &QPushButton::clicked, [this] {
-    int x = lineEdits[0]->text().toInt();
-    int y = lineEdits[1]->text().toInt();
-    board = new Board(x, y, 25, 25, 25, 25, 0);
-    board->start(1000000);
+    // int x = lineEdits[0]->text().toInt();
+    // int y = lineEdits[1]->text().toInt();
+    emit triggerStart(10000000);
   });
   // TODO Button connect, create board
   layout->addWidget(buttons[0]);
@@ -76,6 +79,14 @@ void Dialog::createVillageArea() {
   villageGroupBox->setMinimumWidth(600);
 }
 
+void Dialog::finished() {
+  // TODO popup oÄ
+}
+
+void Dialog::repaint() {
+  this->update();
+}
+
 void Dialog::paintEvent(QPaintEvent*) {
   int x = 20;
   int y = 90;
@@ -85,11 +96,21 @@ void Dialog::paintEvent(QPaintEvent*) {
   // TODO iterate over citizens
   for (int i = 0; i < board->getXDim(); i++) {
     for (int j = 0; j < board->getYDim(); j++) {
+      Citizen* citizens = board->getCitizens();
+      Citizen citizen = citizens[i * board->getXDim() + j];
       QRect rect =
           QRect((j * oneWidth) + x, (i * oneHeight) + y, oneWidth, oneHeight);
       painter.setPen(QPen(Qt::gray, 2));
       painter.drawRect(rect);
-      painter.fillRect(rect, Qt::red);
+      if (citizen.GetParty() == 0) {
+        painter.fillRect(rect, Qt::red);
+      } else if (citizen.GetParty() == 1) {
+        painter.fillRect(rect, Qt::cyan);
+      } else if (citizen.GetParty() == 2) {
+        painter.fillRect(rect, Qt::yellow);
+      } else {
+        painter.fillRect(rect, Qt::green);
+      }
     }
   }
 }

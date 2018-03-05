@@ -6,11 +6,14 @@
 #include <encounter.h>
 #include <stdlib.h>
 #include <time.h>
+#include <QObject>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 
-class Board {
+class Board : public QObject {
+  Q_OBJECT
+
  private:
   Encounter* encounter;
   Citizen* citizens;
@@ -36,6 +39,14 @@ class Board {
   int getXDim();
   int getYDim();
   Citizen* getCitizens();
+
+ public slots:  // receive event
+  void triggerStart(int iterations);
+  void triggerStop();
+
+ signals:  // tell others
+  void finished();
+  void repaint();
 };
 
 #endif  // BOARD_H

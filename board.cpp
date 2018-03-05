@@ -51,18 +51,10 @@ void Board::start(int iterations) {
   for (int i = 0; i < iterations; i++) {
     prepareEncounter(talkingMode);
     if (i % 10000 == 0) {
+      emit repaint();
     }
   }
-  std::cout << "Do you want to continue? (y/n)" << std::endl;
-  std::string input;
-  std::cin >> input;
-  if (input == "y") {
-    std::cout << "Iterations:" << std::endl;
-    int i;
-    std::cin >> i;
-    system("cls");
-    start(i);
-  }
+  emit finished();
 }
 
 void Board::prepareEncounter(int talkMode) {
@@ -124,6 +116,14 @@ int Board::getYDim() {
 
 Citizen* Board::getCitizens() {
   return citizens;
+}
+
+void Board::triggerStart(int iterations) {
+  start(iterations);
+}
+
+void Board::triggerStop() {
+  // TODO stop
 }
 
 namespace talk_modes {
