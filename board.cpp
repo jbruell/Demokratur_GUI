@@ -44,6 +44,7 @@ Board::Board(int x,
 
 Board::~Board() {
   delete encounter;
+  delete[] citizens;
 }
 
 void Board::prepareEncounter(int talkMode) {

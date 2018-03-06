@@ -23,6 +23,9 @@ Dialog::~Dialog() {
   delete[] lineEdits[2];
 
   delete[] exitAction;
+
+  delete thread;
+  delete worker;
 }
 
 void Dialog::setLabels(QLabel* pLabels) {
