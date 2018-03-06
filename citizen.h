@@ -8,8 +8,8 @@ class Citizen {
   Citizen();
   Citizen(int);
   ~Citizen();
-  int GetParty();
-  void SetParty(int);
+  int getParty();
+  void setParty(int);
 };
 
 #endif  // CITIZEN_H

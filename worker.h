@@ -14,6 +14,7 @@ class Worker : public QObject {
  public:
   Worker(Board* board, int pIterations);
   ~Worker();
+  void setBoard(Board* pBoard);
 
  public slots:
   void process();

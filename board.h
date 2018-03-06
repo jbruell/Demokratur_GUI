@@ -32,21 +32,12 @@ class Board : public QObject {
         int share4,
         int talkMode);
   ~Board();
-  void start(int iterations);
   void prepareEncounter(int talkMode);
   void setXDim(int x);
   void setYDim(int y);
   int getXDim();
   int getYDim();
   Citizen* getCitizens();
-
- public slots:  // receive event
-  void triggerStart(int iterations);
-  void triggerStop();
-
- signals:  // tell others
-  void finished();
-  void repaint();
 };
 
 #endif  // BOARD_H

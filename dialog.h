@@ -43,16 +43,15 @@ class Dialog : public QDialog {
 
   QAction* exitAction;
 
+  QThread* thread;
+  Worker* worker;
+
  protected:
   void paintEvent(QPaintEvent*);
 
  public slots:
   void finished();
   void repaint();
-
- signals:
-  void triggerStart(int iterations);
-  void triggerStop();
 };
 
 #endif  // DIALOG_H

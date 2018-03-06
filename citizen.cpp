@@ -10,10 +10,10 @@ Citizen::Citizen(int pParty) {
 
 Citizen::~Citizen() {}
 
-int Citizen::GetParty() {
+int Citizen::getParty() {
   return party;
 }
 
-void Citizen::SetParty(int pParty) {
+void Citizen::setParty(int pParty) {
   party = pParty;
 }

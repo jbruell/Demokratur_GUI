@@ -46,17 +46,6 @@ Board::~Board() {
   delete encounter;
 }
 
-void Board::start(int iterations) {
-  std::srand((unsigned)time(NULL));
-  for (int i = 0; i < iterations; i++) {
-    prepareEncounter(talkingMode);
-    if (i % 10000 == 0) {
-      emit repaint();
-    }
-  }
-  emit finished();
-}
-
 void Board::prepareEncounter(int talkMode) {
   int size = xDim * yDim;
   int index = rand() % size;
@@ -116,14 +105,6 @@ int Board::getYDim() {
 
 Citizen* Board::getCitizens() {
   return citizens;
-}
-
-void Board::triggerStart(int iterations) {
-  start(iterations);
-}
-
-void Board::triggerStop() {
-  // TODO stop
 }
 
 namespace talk_modes {

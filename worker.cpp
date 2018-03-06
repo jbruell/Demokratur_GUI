@@ -11,6 +11,10 @@ Worker::~Worker() {
   // free resources
 }
 
+void Worker::setBoard(Board* pBoard) {
+  board = pBoard;
+}
+
 // --- PROCESS ---
 // Start processing data.
 void Worker::process() {

@@ -38,21 +38,22 @@ void Dialog::createHorizontalGroupBox() {
   QHBoxLayout* layout = new QHBoxLayout;
 
   lineEdits[0] = new QLineEdit;
-  lineEdits[0]->setText("10");
+  lineEdits[0]->setText("50");
   layout->addWidget(lineEdits[0]);
 
   lineEdits[1] = new QLineEdit;
-  lineEdits[1]->setText("10");
+  lineEdits[1]->setText("50");
   layout->addWidget(lineEdits[1]);
 
-  QObject::connect(this, SIGNAL(triggerStart(int)), board,
-                   SLOT(triggerStart(int)));
+  thread = new QThread;
+  worker = new Worker(board, 10000000);
 
-  QObject::connect(this, SIGNAL(triggerStop()), board, SLOT(triggerStop()));
-
-  QObject::connect(board, SIGNAL(repaint()), this, SLOT(repaint()));
-
-  QObject::connect(board, SIGNAL(finished()), this, SLOT(finished()));
+  connect(thread, SIGNAL(started()), worker, SLOT(process()));
+  connect(worker, SIGNAL(finished()), thread, SLOT(quit()));
+  connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+  connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+  connect(worker, SIGNAL(repaint()), this, SLOT(repaint()));
+  connect(worker, SIGNAL(finished()), this, SLOT(finished()));
 
   buttons[0] = new QPushButton("Start");
   QObject::connect(buttons[0], &QPushButton::clicked, [this] {
@@ -61,14 +62,8 @@ void Dialog::createHorizontalGroupBox() {
     delete board;
     board = new Board(x, y, 25, 25, 25, 25, 0);
 
-    QThread* thread = new QThread;
-    Worker* worker = new Worker(board, 10000000);
+    worker->setBoard(board);
     worker->moveToThread(thread);
-    connect(thread, SIGNAL(started()), worker, SLOT(process()));
-    connect(worker, SIGNAL(finished()), thread, SLOT(quit()));
-    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
-    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-    connect(worker, SIGNAL(repaint()), this, SLOT(repaint()));
     thread->start();
   });
   layout->addWidget(buttons[0]);
@@ -89,7 +84,7 @@ void Dialog::createVillageArea() {
 }
 
 void Dialog::finished() {
-  // TODO popup oÄ
+  std::cout << "finished" << std::endl;
 }
 
 void Dialog::repaint() {
@@ -111,11 +106,11 @@ void Dialog::paintEvent(QPaintEvent*) {
           QRect((j * oneWidth) + x, (i * oneHeight) + y, oneWidth, oneHeight);
       painter.setPen(QPen(Qt::gray, 2));
       painter.drawRect(rect);
-      if (citizen.GetParty() == 0) {
+      if (citizen.getParty() == 0) {
         painter.fillRect(rect, Qt::red);
-      } else if (citizen.GetParty() == 1) {
+      } else if (citizen.getParty() == 1) {
         painter.fillRect(rect, Qt::cyan);
-      } else if (citizen.GetParty() == 2) {
+      } else if (citizen.getParty() == 2) {
         painter.fillRect(rect, Qt::yellow);
       } else {
         painter.fillRect(rect, Qt::green);
