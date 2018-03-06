@@ -98,12 +98,11 @@ void Dialog::paintEvent(QPaintEvent*) {
   int x = 20;
   int y = 90;
   double oneWidth = (size().width() - 2 * x) / (double)board->getXDim();
-  double oneHeight = (size().height() - y - 20) / (double)board->getXDim();
+  double oneHeight = (size().height() - y - 20) / (double)board->getYDim();
   QPainter painter(this);
-  // TODO iterate over citizens
-  for (int i = 0; i < board->getXDim(); i++) {
-    for (int j = 0; j < board->getYDim(); j++) {
-      Citizen* citizens = board->getCitizens();
+  Citizen* citizens = board->getCitizens();
+  for (int i = 0; i < board->getYDim(); i++) {
+    for (int j = 0; j < board->getXDim(); j++) {
       Citizen citizen = citizens[i * board->getXDim() + j];
       QRect rect =
           QRect((j * oneWidth) + x, (i * oneHeight) + y, oneWidth, oneHeight);
