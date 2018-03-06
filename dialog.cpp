@@ -1,6 +1,7 @@
 #include <dialog.h>
 
 Dialog::Dialog() {
+  board = new Board(10, 10, 25, 25, 25, 25, 0);
   createHorizontalGroupBox();
   createVillageArea();
 
@@ -8,8 +9,6 @@ Dialog::Dialog() {
   mainLayout->addWidget(horizontalGroupBox);
   mainLayout->addWidget(villageGroupBox);
   setLayout(mainLayout);
-
-  board = new Board(10, 10, 25, 25, 25, 25, 0);
 
   setWindowTitle("Demokratur");
   update();
@@ -46,14 +45,14 @@ void Dialog::createHorizontalGroupBox() {
   lineEdits[1]->setText("10");
   layout->addWidget(lineEdits[1]);
 
-  QObject::connect(this, SIGNAL(triggerStart(int)),
-                   SLOT(&Board::triggerStart(int)));
+  QObject::connect(this, SIGNAL(triggerStart(int)), board,
+                   SLOT(triggerStart(int)));
 
-  QObject::connect(this, SIGNAL(triggerStop()), SLOT(&Board::triggerStop()));
+  QObject::connect(this, SIGNAL(triggerStop()), board, SLOT(triggerStop()));
 
-  QObject::connect(board, SIGNAL(&Board::repaint()), SLOT(repaint()));
+  QObject::connect(board, SIGNAL(repaint()), this, SLOT(repaint()));
 
-  QObject::connect(board, SIGNAL(&Board::finished()), SLOT(finished()));
+  QObject::connect(board, SIGNAL(finished()), this, SLOT(finished()));
 
   buttons[0] = new QPushButton("Start");
   QObject::connect(buttons[0], &QPushButton::clicked, [this] {
