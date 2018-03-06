@@ -56,9 +56,10 @@ void Dialog::createHorizontalGroupBox() {
 
   buttons[0] = new QPushButton("Start");
   QObject::connect(buttons[0], &QPushButton::clicked, [this] {
-    // int x = lineEdits[0]->text().toInt();
-    // int y = lineEdits[1]->text().toInt();
-    // emit triggerStart(10000000);
+    int x = lineEdits[0]->text().toInt();
+    int y = lineEdits[1]->text().toInt();
+    delete board;
+    board = new Board(x, y, 25, 25, 25, 25, 0);
 
     QThread* thread = new QThread;
     Worker* worker = new Worker(board, 10000000);
