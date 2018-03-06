@@ -1,7 +1,7 @@
 #include <dialog.h>
 
 Dialog::Dialog() {
-  board = new Board(10, 10, 25, 25, 25, 25, 0);
+  board = new Board(50, 50, 25, 25, 25, 25, 0);
   createHorizontalGroupBox();
   createVillageArea();
 
@@ -58,14 +58,23 @@ void Dialog::createHorizontalGroupBox() {
   QObject::connect(buttons[0], &QPushButton::clicked, [this] {
     // int x = lineEdits[0]->text().toInt();
     // int y = lineEdits[1]->text().toInt();
-    emit triggerStart(10000000);
+    // emit triggerStart(10000000);
+
+    QThread* thread = new QThread;
+    Worker* worker = new Worker(board, 10000000);
+    worker->moveToThread(thread);
+    connect(thread, SIGNAL(started()), worker, SLOT(process()));
+    connect(worker, SIGNAL(finished()), thread, SLOT(quit()));
+    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+    connect(worker, SIGNAL(repaint()), this, SLOT(repaint()));
+    thread->start();
   });
-  // TODO Button connect, create board
   layout->addWidget(buttons[0]);
 
   buttons[1] = new QPushButton("Stop");
   QObject::connect(buttons[1], &QPushButton::clicked,
-                   [this] { std::cout << "test"; });
+                   [this] { std::cout << "TODO implement stop"; });
   layout->addWidget(buttons[1]);
 
   horizontalGroupBox->setLayout(layout);

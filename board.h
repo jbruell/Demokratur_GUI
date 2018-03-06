@@ -20,7 +20,6 @@ class Board : public QObject {
   int talkingMode;
   int xDim;
   int yDim;
-  void prepareEncounter(int talkMode);
   void printVillage();
 
  public:
@@ -34,6 +33,7 @@ class Board : public QObject {
         int talkMode);
   ~Board();
   void start(int iterations);
+  void prepareEncounter(int talkMode);
   void setXDim(int x);
   void setYDim(int y);
   int getXDim();

@@ -25,10 +25,12 @@ HEADERS     = board.h \
     citizen.h \
     dialog.h \
     dialog.h \
-    encounter.h
+    encounter.h \
+    worker.h
 SOURCES     = board.cpp \
     citizen.cpp \
     dialog.cpp \
     encounter.cpp\
-    main.cpp
+    main.cpp \
+    worker.cpp
 

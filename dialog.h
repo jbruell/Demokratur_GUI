@@ -2,8 +2,10 @@
 #define DIALOG_H
 
 #include <board.h>
+#include <worker.h>
 #include <QDialog>
 #include <QObject>
+#include <QThread>
 #include <QtWidgets>
 #include <iostream>
 
