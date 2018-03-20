@@ -50,8 +50,13 @@ class Dialog : public QDialog {
   void paintEvent(QPaintEvent*);
 
  public slots:
+  void handleStartButton();
+  void handleStopButton();
   void finished();
   void repaint();
+
+ signals:
+  void setBoard(Board* pBoard);
 };
 
 #endif  // DIALOG_H

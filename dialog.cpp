@@ -11,7 +11,6 @@ Dialog::Dialog() {
   setLayout(mainLayout);
 
   setWindowTitle("Demokratur");
-  update();
 }
 
 Dialog::~Dialog() {
@@ -49,31 +48,22 @@ void Dialog::createHorizontalGroupBox() {
   layout->addWidget(lineEdits[1]);
 
   thread = new QThread;
-  worker = new Worker(board, 10000000);
+  worker = new Worker(board, 1000000000);
+  worker->moveToThread(thread);
 
   connect(thread, SIGNAL(started()), worker, SLOT(process()));
-  connect(worker, SIGNAL(finished()), thread, SLOT(quit()));
-  connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
-  connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
   connect(worker, SIGNAL(repaint()), this, SLOT(repaint()));
   connect(worker, SIGNAL(finished()), this, SLOT(finished()));
+  connect(this, SIGNAL(setBoard(Board*)), worker, SLOT(setBoard(Board*)));
 
   buttons[0] = new QPushButton("Start");
-  QObject::connect(buttons[0], &QPushButton::clicked, [this] {
-    int x = lineEdits[0]->text().toInt();
-    int y = lineEdits[1]->text().toInt();
-    delete board;
-    board = new Board(x, y, 25, 25, 25, 25, 0);
-
-    worker->setBoard(board);
-    worker->moveToThread(thread);
-    thread->start();
-  });
+  QObject::connect(buttons[0], &QPushButton::clicked,
+                   [this] { handleStartButton(); });
   layout->addWidget(buttons[0]);
 
   buttons[1] = new QPushButton("Stop");
   QObject::connect(buttons[1], &QPushButton::clicked,
-                   [this] { std::cout << "TODO implement stop"; });
+                   [this] { handleStopButton(); });
   layout->addWidget(buttons[1]);
 
   horizontalGroupBox->setLayout(layout);
@@ -86,12 +76,28 @@ void Dialog::createVillageArea() {
   villageGroupBox->setMinimumWidth(600);
 }
 
+void Dialog::handleStartButton() {
+  int x = lineEdits[0]->text().toInt();
+  int y = lineEdits[1]->text().toInt();
+  delete board;
+    board = new Board(x, y, 25, 25, 25, 25, 0);
+    emit setBoard(board);
+
+  thread->start();
+}
+
+void Dialog::handleStopButton() {
+  // worker->moveToThread(QThread::currentThread());
+  thread->requestInterruption();
+  thread->quit();
+}
+
 void Dialog::finished() {
   std::cout << "finished" << std::endl;
 }
 
 void Dialog::repaint() {
-  this->update();
+  update();
 }
 
 void Dialog::paintEvent(QPaintEvent*) {

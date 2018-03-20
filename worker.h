@@ -3,6 +3,7 @@
 
 #include <board.h>
 #include <QObject>
+#include <QThread>
 
 class Worker : public QObject {
   Q_OBJECT
@@ -10,14 +11,15 @@ class Worker : public QObject {
  private:
   Board* board;
   int iterations;
+  int remainingIterations;
 
  public:
   Worker(Board* board, int pIterations);
   ~Worker();
-  void setBoard(Board* pBoard);
 
  public slots:
   void process();
+  void setBoard(Board* pBoard);
 
  signals:
   void finished();
