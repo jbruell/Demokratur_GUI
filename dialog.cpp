@@ -80,8 +80,8 @@ void Dialog::handleStartButton() {
   int x = lineEdits[0]->text().toInt();
   int y = lineEdits[1]->text().toInt();
   delete board;
-    board = new Board(x, y, 25, 25, 25, 25, 0);
-    emit setBoard(board);
+  board = new Board(x, y, 25, 25, 25, 25, 0);
+  emit setBoard(board);
 
   thread->start();
 }

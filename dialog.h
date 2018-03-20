@@ -31,6 +31,8 @@ class Dialog : public QDialog {
  private:
   void createHorizontalGroupBox();
   void createVillageArea();
+  void handleStartButton();
+  void handleStopButton();
 
   Board* board;
 
@@ -50,8 +52,6 @@ class Dialog : public QDialog {
   void paintEvent(QPaintEvent*);
 
  public slots:
-  void handleStartButton();
-  void handleStopButton();
   void finished();
   void repaint();
 
