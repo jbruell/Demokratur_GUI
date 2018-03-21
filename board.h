@@ -46,6 +46,7 @@ class Board : public QObject {
              int share3,
              int share4,
              int talkMode);
+  bool isDictatorship();
 };
 
 #endif  // BOARD_H

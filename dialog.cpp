@@ -92,6 +92,7 @@ void Dialog::handleStopButton() {
 
 void Dialog::finished() {
   std::cout << "finished" << std::endl;
+  handleStopButton();
 }
 
 void Dialog::repaint() {

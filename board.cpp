@@ -91,6 +91,17 @@ void Board::prepareEncounter(int talkMode) {
   encounter->talk(c1, c2);
 }
 
+bool Board::isDictatorship() {
+  int party = citizens[0].getParty();
+  int size = xDim * yDim;
+  for (int i = 0; i < size; i++) {
+    if (citizens[i].getParty() != party) {
+      return false;
+    }
+  }
+  return true;
+}
+
 void Board::setXDim(int x) {
   xDim = x;
 }
