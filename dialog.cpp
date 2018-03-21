@@ -79,15 +79,13 @@ void Dialog::createVillageArea() {
 void Dialog::handleStartButton() {
   int x = lineEdits[0]->text().toInt();
   int y = lineEdits[1]->text().toInt();
-  delete board;
-  board = new Board(x, y, 25, 25, 25, 25, 0);
-  emit setBoard(board);
+
+  board->reset(x, y, 25, 25, 25, 25, 0);
 
   thread->start();
 }
 
 void Dialog::handleStopButton() {
-  // worker->moveToThread(QThread::currentThread());
   thread->requestInterruption();
   thread->quit();
 }

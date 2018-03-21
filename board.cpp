@@ -21,12 +21,20 @@ Board::Board(int x,
 
   talkingMode = talkMode;
   citizens = new Citizen[x * y];
+  setParties(share1, share2, share3, x * y);
+}
 
-  int p1 = share1 * ((x * y) / 100);
-  int p2 = p1 + share2 * ((x * y) / 100);
-  int p3 = p2 + share3 * ((x * y) / 100);
+Board::~Board() {
+  delete encounter;
+  delete[] citizens;
+}
 
-  for (int i = 0; i < x * y; i++) {
+void Board::setParties(int share1, int share2, int share3, int size) {
+  int p1 = share1 * (size / 100);
+  int p2 = p1 + share2 * (size / 100);
+  int p3 = p2 + share3 * (size / 100);
+
+  for (int i = 0; i < size; i++) {
     int party;
     if (i < p1) {
       party = 0;
@@ -40,11 +48,6 @@ Board::Board(int x,
     Citizen* c = new Citizen(party);
     citizens[i] = *c;
   }
-}
-
-Board::~Board() {
-  delete encounter;
-  delete[] citizens;
 }
 
 void Board::prepareEncounter(int talkMode) {
@@ -106,6 +109,21 @@ int Board::getYDim() {
 
 Citizen* Board::getCitizens() {
   return citizens;
+}
+
+void Board::reset(int x,
+                  int y,
+                  int share1,
+                  int share2,
+                  int share3,
+                  int share4,
+                  int talkMode) {
+  if (share1 + share2 + share3 + share4 != 100) {
+    throw std::invalid_argument("Shares do not add up to 100 percent");
+  }
+  setXDim(x);
+  setYDim(y);
+  setParties(share1, share2, share3, xDim * yDim);
 }
 
 namespace talk_modes {
