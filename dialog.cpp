@@ -65,6 +65,7 @@ void Dialog::createHorizontalGroupBox() {
   QObject::connect(buttons[1], &QPushButton::clicked,
                    [this] { handleStopButton(); });
   layout->addWidget(buttons[1]);
+  buttons[1]->setEnabled(false);
 
   horizontalGroupBox->setLayout(layout);
   horizontalGroupBox->setFixedHeight(58);
@@ -83,11 +84,15 @@ void Dialog::handleStartButton() {
   board->reset(x, y, 25, 25, 25, 25, 0);
 
   thread->start();
+  buttons[0]->setEnabled(false);
+  buttons[1]->setEnabled(true);
 }
 
 void Dialog::handleStopButton() {
   thread->requestInterruption();
   thread->quit();
+  buttons[0]->setEnabled(true);
+  buttons[1]->setEnabled(false);
 }
 
 void Dialog::finished() {
