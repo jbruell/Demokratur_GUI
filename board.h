@@ -27,6 +27,7 @@ class Board : public QObject {
   int yDim;
   int size;
   void initPositions();
+  void initCitizens();
   void printVillage();
   void updatePos(std::shared_ptr<BaseEntity> cit,
                  std::shared_ptr<Position> pos);
@@ -66,6 +67,8 @@ class Board : public QObject {
   void moveEast(std::shared_ptr<BaseEntity> citizen);
   void moveNorth(std::shared_ptr<BaseEntity> citizen);
   void moveSouth(std::shared_ptr<BaseEntity> citizen);
+  std::shared_ptr<Position> getPosition(int index);
+  std::vector<std::shared_ptr<BaseEntity>>* getBaseEntities();
 };
 
 #endif  // BOARD_H

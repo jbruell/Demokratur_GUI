@@ -14,17 +14,20 @@ Board::Board(int x,
   if (share1 + share2 + share3 + share4 != 100) {
     throw std::invalid_argument("Shares do not add up to 100 percent");
   }
-  encounter = new Encounter();
+  // encounter = new Encounter();
 
   xDim = x;
   yDim = y;
   size = x * y;
 
   talkingMode = talkMode;
-  citizens = new Citizen[x * y];
-  setParties(share1, share2, share3, x * y);
+  // citizens = new Citizen[x * y];
+  // setParties(share1, share2, share3, x * y);
 
   // TODO init vectors & update destructor
+  initPositions();
+  initCitizens();
+  // updatePos(entities.at(0), positions.at(100));
 }
 
 Board::~Board() {
@@ -75,23 +78,48 @@ void Board::initPositions() {
   }
 }
 
+void Board::initCitizens() {
+  for (int i = 0; i < 10; i++) {
+    std::shared_ptr<Citizen> cit(new Citizen(0));
+    entities.push_back(std::move(cit));
+    updatePos(entities.at(i), positions.at(10 * i));
+    // updatePos(cit, positions.at(10 * i));
+  }
+}
+
 void Board::moveWest(std::shared_ptr<BaseEntity> citizen) {
-  updatePos(citizen, citizen->getPosition()->getWest());
+  std::shared_ptr<Position> pos = citizen->getPosition();
+  pos->setBaseEntity(NULL);
+  updatePos(citizen, pos->getWest());
 }
 void Board::moveEast(std::shared_ptr<BaseEntity> citizen) {
-  updatePos(citizen, citizen->getPosition()->getEast());
+  std::shared_ptr<Position> pos = citizen->getPosition();
+  pos->setBaseEntity(NULL);
+  updatePos(citizen, pos->getEast());
 }
 void Board::moveNorth(std::shared_ptr<BaseEntity> citizen) {
-  updatePos(citizen, citizen->getPosition()->getNorth());
+  std::shared_ptr<Position> pos = citizen->getPosition();
+  pos->setBaseEntity(NULL);
+  updatePos(citizen, pos->getNorth());
 }
 void Board::moveSouth(std::shared_ptr<BaseEntity> citizen) {
-  updatePos(citizen, citizen->getPosition()->getSouth());
+  std::shared_ptr<Position> pos = citizen->getPosition();
+  pos->setBaseEntity(NULL);
+  updatePos(citizen, pos->getSouth());
 }
 
 void Board::updatePos(std::shared_ptr<BaseEntity> cit,
                       std::shared_ptr<Position> pos) {
   cit->setPosition(pos);
   pos->setBaseEntity(cit);
+}
+
+std::shared_ptr<Position> Board::getPosition(int index) {
+  return positions.at(index);
+}
+
+std::vector<std::shared_ptr<BaseEntity>>* Board::getBaseEntities() {
+  return &entities;
 }
 
 void Board::setParties(int share1, int share2, int share3, int size) {
