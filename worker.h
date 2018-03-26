@@ -21,6 +21,11 @@ class Worker : public QObject {
   void process();
   void setBoard(Board* pBoard);
 
+  void left(Citizen* cit);
+  void right(Citizen* cit);
+  void up(Citizen* cit);
+  void down(Citizen* cit);
+
  signals:
   void finished();
   void repaint();

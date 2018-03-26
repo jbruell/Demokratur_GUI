@@ -26,11 +26,16 @@ HEADERS     = board.h \
     dialog.h \
     dialog.h \
     encounter.h \
-    worker.h
+    worker.h \
+    position.h \
+    baseentity.h \
+    headers.h
 SOURCES     = board.cpp \
     citizen.cpp \
     dialog.cpp \
     encounter.cpp\
     main.cpp \
-    worker.cpp
+    worker.cpp \
+    position.cpp \
+    baseentity.cpp
 

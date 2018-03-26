@@ -18,15 +18,80 @@ Board::Board(int x,
 
   xDim = x;
   yDim = y;
+  size = x * y;
 
   talkingMode = talkMode;
   citizens = new Citizen[x * y];
   setParties(share1, share2, share3, x * y);
+
+  // TODO init vectors & update destructor
 }
 
 Board::~Board() {
   delete encounter;
   delete[] citizens;
+}
+
+void Board::initPositions() {
+  for (int i = 0; i < yDim; i++) {
+    for (int j = 0; j < xDim; j++) {
+      std::shared_ptr<Position> sharedPtr(new Position(j, i));
+      positions.push_back(std::move(sharedPtr));
+    }
+  }
+
+  for (int i = 0; i < size; i++) {
+    std::shared_ptr<Position> pos = positions.at(i);
+    int x = pos->getX();
+    int y = pos->getY();
+
+    // north
+    if (y == 0) {
+      pos->setNorth(positions.at(size - xDim + i));
+    } else {
+      pos->setNorth(positions.at(i - xDim));
+    }
+
+    // south
+    if (y == yDim - 1) {
+      pos->setSouth(positions.at(i % xDim));
+    } else {
+      pos->setSouth(positions.at(i + xDim));
+    }
+
+    // west
+    if (x == 0) {
+      pos->setWest(positions.at(i + xDim - 1));
+    } else {
+      pos->setWest(positions.at(i - 1));
+    }
+
+    // east
+    if (x == xDim - 1) {
+      pos->setEast(positions.at(i - xDim + 1));
+    } else {
+      pos->setEast(positions.at(i + 1));
+    }
+  }
+}
+
+void Board::moveWest(std::shared_ptr<BaseEntity> citizen) {
+  updatePos(citizen, citizen->getPosition()->getWest());
+}
+void Board::moveEast(std::shared_ptr<BaseEntity> citizen) {
+  updatePos(citizen, citizen->getPosition()->getEast());
+}
+void Board::moveNorth(std::shared_ptr<BaseEntity> citizen) {
+  updatePos(citizen, citizen->getPosition()->getNorth());
+}
+void Board::moveSouth(std::shared_ptr<BaseEntity> citizen) {
+  updatePos(citizen, citizen->getPosition()->getSouth());
+}
+
+void Board::updatePos(std::shared_ptr<BaseEntity> cit,
+                      std::shared_ptr<Position> pos) {
+  cit->setPosition(pos);
+  pos->setBaseEntity(cit);
 }
 
 void Board::setParties(int share1, int share2, int share3, int size) {

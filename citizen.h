@@ -1,7 +1,9 @@
 #ifndef CITIZEN_H
 #define CITIZEN_H
 
-class Citizen {
+#include <baseentity.h>
+
+class Citizen : public BaseEntity {
   int party;
 
  public:

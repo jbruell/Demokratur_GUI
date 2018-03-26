@@ -4,7 +4,6 @@ Worker::Worker(Board* pBoard, int pIterations) {
   board = pBoard;
   iterations = pIterations;
   remainingIterations = iterations;
-  connect(board, SIGNAL(isDictatorship()), this, SLOT(isDictatorship()));
 }
 
 Worker::~Worker() {}
@@ -33,3 +32,13 @@ void Worker::process() {
   }
   emit finished();
 }
+
+void Worker::left(Citizen* cit) {
+  // call board->moveLeft(cit);
+}
+
+void Worker::right(Citizen* cit) {}
+
+void Worker::up(Citizen* cit) {}
+
+void Worker::down(Citizen* cit) {}

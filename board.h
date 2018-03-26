@@ -2,14 +2,19 @@
 #define BOARD_H
 
 #include <Windows.h>
+#include <baseentity.h>
 #include <citizen.h>
 #include <encounter.h>
+#include <position.h>
 #include <stdlib.h>
 #include <time.h>
 #include <QObject>
+#include <algorithm>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 class Board : public QObject {
   Q_OBJECT
@@ -20,7 +25,15 @@ class Board : public QObject {
   int talkingMode;
   int xDim;
   int yDim;
+  int size;
+  void initPositions();
   void printVillage();
+  void updatePos(std::shared_ptr<BaseEntity> cit,
+                 std::shared_ptr<Position> pos);
+
+  // neue version
+  std::vector<std::shared_ptr<Position>> positions;
+  std::vector<std::shared_ptr<BaseEntity>> entities;
 
  public:
   Board();
@@ -47,6 +60,12 @@ class Board : public QObject {
              int share4,
              int talkMode);
   bool isDictatorship();
+
+  // neue version
+  void moveWest(std::shared_ptr<BaseEntity> citizen);
+  void moveEast(std::shared_ptr<BaseEntity> citizen);
+  void moveNorth(std::shared_ptr<BaseEntity> citizen);
+  void moveSouth(std::shared_ptr<BaseEntity> citizen);
 };
 
 #endif  // BOARD_H
