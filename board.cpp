@@ -112,6 +112,7 @@ void Board::updatePos(std::shared_ptr<BaseEntity> cit,
                       std::shared_ptr<Position> pos) {
   cit->setPosition(pos);
   pos->setBaseEntity(cit);
+  initEncounter(cit);
 }
 
 std::shared_ptr<Position> Board::getPosition(int index) {
@@ -144,21 +145,26 @@ void Board::setParties(int share1, int share2, int share3, int size) {
 }
 
 void Board::initEncounter(std::shared_ptr<BaseEntity> citizen) {
-  //  std::shared_ptr<Position> pos = citizen->getPosition();
-  //  // TODO Interface für jede Eigenschaft ( zb Movable, Talkable, etc)
-  //  std::shared_ptr<BaseEntity> neighbour = NULL;
-  //  if (pos->getNorth()->getBaseEntity() != NULL) {
-  //    neighbour = pos->getNorth()->getBaseEntity();
-  //  } else if (pos->getSouth()->getBaseEntity() != NULL) {
-  //    neighbour = pos->getSouth()->getBaseEntity();
-  //  } else if (pos->getEast()->getBaseEntity() != NULL) {
-  //    neighbour = pos->getEast()->getBaseEntity();
-  //  } else if (pos->getWest()->getBaseEntity() != NULL) {
-  //    neighbour = pos->getWest()->getBaseEntity();
-  //  }
-  //  if (neighbour != NULL && neighbour->isCitizen()) {
-  //    encounter->talk(citizen, casted_neighbour);
-  //  }
+  std::shared_ptr<Position> pos = citizen->getPosition();
+  // TODO Interface für jede Eigenschaft ( zb Movable, Talkable, etc)
+  std::shared_ptr<BaseEntity> neighbour = NULL;
+  if (pos->getNorth()->getBaseEntity() != NULL &&
+      pos->getNorth()->getBaseEntity()->isCitizen()) {
+    neighbour = pos->getNorth()->getBaseEntity();
+  } else if (pos->getSouth()->getBaseEntity() != NULL &&
+             pos->getSouth()->getBaseEntity()->isCitizen()) {
+    neighbour = pos->getSouth()->getBaseEntity();
+  } else if (pos->getEast()->getBaseEntity() != NULL &&
+             pos->getEast()->getBaseEntity()->isCitizen()) {
+    neighbour = pos->getEast()->getBaseEntity();
+  } else if (pos->getWest()->getBaseEntity() != NULL &&
+             pos->getWest()->getBaseEntity()->isCitizen()) {
+    neighbour = pos->getWest()->getBaseEntity();
+  }
+  if (neighbour != NULL) {
+    encounter->talk(std::static_pointer_cast<Citizen>(citizen),
+                    std::static_pointer_cast<Citizen>(neighbour));
+  }
 }
 
 bool Board::isDictatorship() {
