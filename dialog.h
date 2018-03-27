@@ -51,6 +51,7 @@ class Dialog : public QDialog {
 
  protected:
   void paintEvent(QPaintEvent*);
+  virtual void closeEvent(QCloseEvent* e);
 
  public slots:
   void finished();

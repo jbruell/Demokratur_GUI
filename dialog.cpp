@@ -16,11 +16,11 @@ Dialog::Dialog() {
 
 Dialog::~Dialog() {
   delete board;
-  delete horizontalGroupBox;
-  delete villageGroupBox;
-  delete labels;
-  delete[] buttons[3];
-  delete[] lineEdits[3];
+  // delete horizontalGroupBox;
+  // delete villageGroupBox;
+  // delete labels;
+  // delete[] buttons[3];
+  // delete[] lineEdits[3];
 
   delete thread;
   delete worker;
@@ -166,4 +166,9 @@ void Dialog::paintEvent(QPaintEvent*) {
     painter.drawRect(rect);
     painter.fillRect(rect, entity->getColor());
   }
+}
+
+void Dialog::closeEvent(QCloseEvent* e) {
+  thread->quit();
+  e->accept();
 }
