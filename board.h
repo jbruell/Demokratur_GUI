@@ -21,13 +21,11 @@ class Board : public QObject {
 
  private:
   Encounter* encounter;
-  Citizen* citizens;
-  int talkingMode;
   int xDim;
   int yDim;
   int size;
   void initPositions();
-  void initCitizens();
+  void initCitizens(int persons);
   void printVillage();
   void updatePos(std::shared_ptr<BaseEntity> cit,
                  std::shared_ptr<Position> pos);
@@ -38,27 +36,13 @@ class Board : public QObject {
 
  public:
   Board();
-  Board(int x,
-        int y,
-        int share1,
-        int share2,
-        int share3,
-        int share4,
-        int talkMode);
+  Board(int x, int y, int persons);
   ~Board();
-  void setParties(int share1, int share2, int share3, int size);
   void setXDim(int x);
   void setYDim(int y);
   int getXDim();
   int getYDim();
-  Citizen* getCitizens();
-  void reset(int x,
-             int y,
-             int share1,
-             int share2,
-             int share3,
-             int share4,
-             int talkMode);
+  void reset(int x, int y, int persons);
   bool isDictatorship();
 
   // neue version
@@ -69,6 +53,7 @@ class Board : public QObject {
   std::shared_ptr<Position> getPosition(int index);
   std::vector<std::shared_ptr<BaseEntity>>* getBaseEntities();
   void initEncounter(std::shared_ptr<BaseEntity> citizen);
+  void resetTalkingStatus();
 };
 
 #endif  // BOARD_H

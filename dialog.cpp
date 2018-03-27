@@ -1,7 +1,7 @@
 #include <dialog.h>
 
 Dialog::Dialog() {
-  board = new Board(50, 50, 25, 25, 25, 25, 0);
+  board = new Board(15, 15, 50);
   createHorizontalGroupBox();
   createVillageArea();
 
@@ -40,21 +40,23 @@ void Dialog::createHorizontalGroupBox() {
   QHBoxLayout* layout = new QHBoxLayout;
 
   lineEdits[0] = new QLineEdit;
-  lineEdits[0]->setText("50");
+  lineEdits[0]->setText("15");
   layout->addWidget(lineEdits[0]);
 
   lineEdits[1] = new QLineEdit;
-  lineEdits[1]->setText("50");
+  lineEdits[1]->setText("15");
   layout->addWidget(lineEdits[1]);
 
   thread = new QThread;
   worker = new Worker(board, 1000000000);
   worker->moveToThread(thread);
 
-  connect(thread, SIGNAL(started()), worker, SLOT(process()));
   connect(worker, SIGNAL(repaint()), this, SLOT(repaint()));
   connect(worker, SIGNAL(finished()), this, SLOT(finished()));
   connect(this, SIGNAL(setBoard(Board*)), worker, SLOT(setBoard(Board*)));
+  connect(this, SIGNAL(start()), worker, SLOT(start()));
+  connect(this, SIGNAL(stop()), worker, SLOT(stop()));
+  thread->start();
 
   buttons[0] = new QPushButton("Start");
   QObject::connect(buttons[0], &QPushButton::clicked,
@@ -81,17 +83,18 @@ void Dialog::handleStartButton() {
   int x = lineEdits[0]->text().toInt();
   int y = lineEdits[1]->text().toInt();
 
-  // board->reset(x, y, 25, 25, 25, 25, 0);
+  board->reset(x, y, 50);
   // TODO drittes textfeld -> anzahl pers, fix buttons
 
-  thread->start();
+  emit start();
   buttons[0]->setEnabled(false);
   buttons[1]->setEnabled(true);
 }
 
 void Dialog::handleStopButton() {
-  thread->requestInterruption();
-  thread->quit();
+  // thread->requestInterruption();
+  // thread->quit();
+  emit stop();
   buttons[0]->setEnabled(true);
   buttons[1]->setEnabled(false);
 }

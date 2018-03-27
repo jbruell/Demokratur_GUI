@@ -22,6 +22,8 @@ class Worker : public QObject {
  public slots:
   void process();
   void setBoard(Board* pBoard);
+  void start();
+  void stop();
 
   void left(std::shared_ptr<BaseEntity> cit);
   void right(std::shared_ptr<BaseEntity> cit);

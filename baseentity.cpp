@@ -24,6 +24,6 @@ bool BaseEntity::isCitizen() {
   return citizen;
 }
 
-bool BaseEntity::setCitizen(bool cit) {
+void BaseEntity::setCitizen(bool cit) {
   citizen = cit;
 }

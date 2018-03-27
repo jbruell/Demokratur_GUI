@@ -57,6 +57,8 @@ class Dialog : public QDialog {
 
  signals:
   void setBoard(Board* pBoard);
+  void start();
+  void stop();
 };
 
 #endif  // DIALOG_H

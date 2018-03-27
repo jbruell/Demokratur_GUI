@@ -7,10 +7,17 @@ Worker::Worker(Board* pBoard, int pIterations) {
 
   timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(process()));
-  timer->start(1000);
 }
 
 Worker::~Worker() {}
+
+void Worker::start() {
+  timer->start(100);
+}
+
+void Worker::stop() {
+  timer->stop();
+}
 
 void Worker::setBoard(Board* pBoard) {
   board = pBoard;
@@ -18,8 +25,6 @@ void Worker::setBoard(Board* pBoard) {
 }
 
 void Worker::process() {
-  // std::srand((unsigned)time(NULL));
-  // for (int i = 0; i < remainingIterations; i++) {
   std::vector<std::shared_ptr<BaseEntity>>* entities = board->getBaseEntities();
   for (std::shared_ptr<BaseEntity> entity : *entities) {
     switch (rand() % 4) {
@@ -37,13 +42,14 @@ void Worker::process() {
         break;
     }
   }
+  board->resetTalkingStatus();
   emit repaint();
-  // if (QThread::currentThread()->isInterruptionRequested()) {
-  // remainingIterations = iterations - i;
-  // return;
-  //}
-  //}
-  // emit finished();
+  if (QThread::currentThread()->isInterruptionRequested()) {
+    return;
+  }
+  if (board->isDictatorship()) {
+    emit finished();
+  }
 }
 
 void Worker::left(std::shared_ptr<BaseEntity> cit) {

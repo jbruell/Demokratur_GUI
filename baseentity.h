@@ -21,7 +21,7 @@ class BaseEntity {
   void setColor(QColor col);
   QColor getColor();
   bool isCitizen();
-  bool setCitizen(bool cit);
+  void setCitizen(bool cit);
 };  // TODO interface statt base class
 
 #endif  // BASEENTITY_H
