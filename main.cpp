@@ -6,7 +6,7 @@
 int main(int argc, char* argv[]) {
   QApplication app(argc, argv);
 
-  Dialog* dialog = new Dialog();
+  Dialog* dialog = new Dialog();  // TODO memory optimization
   dialog->show();
   return app.exec();
 }

@@ -4,6 +4,10 @@ Worker::Worker(Board* pBoard, int pIterations) {
   board = pBoard;
   iterations = pIterations;
   remainingIterations = iterations;
+
+  timer = new QTimer(this);
+  connect(timer, SIGNAL(timeout()), this, SLOT(process()));
+  timer->start(1000);
 }
 
 Worker::~Worker() {}
@@ -14,31 +18,46 @@ void Worker::setBoard(Board* pBoard) {
 }
 
 void Worker::process() {
-  std::srand((unsigned)time(NULL));
-  for (int i = 0; i < remainingIterations; i++) {
-    board->prepareEncounter(0);
-    if (i % 1000 == 0) {
-      emit repaint();
-      if (board->isDictatorship()) {
-        remainingIterations = iterations;
-        emit finished();
-        return;
-      }
-    }
-    if (QThread::currentThread()->isInterruptionRequested()) {
-      remainingIterations = iterations - i;
-      return;
+  // std::srand((unsigned)time(NULL));
+  // for (int i = 0; i < remainingIterations; i++) {
+  std::vector<std::shared_ptr<BaseEntity>>* entities = board->getBaseEntities();
+  for (std::shared_ptr<BaseEntity> entity : *entities) {
+    switch (rand() % 4) {
+      case 0:
+        left(entity);
+        break;
+      case 1:
+        right(entity);
+        break;
+      case 2:
+        up(entity);
+        break;
+      case 3:
+        down(entity);
+        break;
     }
   }
-  emit finished();
+  emit repaint();
+  // if (QThread::currentThread()->isInterruptionRequested()) {
+  // remainingIterations = iterations - i;
+  // return;
+  //}
+  //}
+  // emit finished();
 }
 
-void Worker::left(Citizen* cit) {
-  // call board->moveLeft(cit);
+void Worker::left(std::shared_ptr<BaseEntity> cit) {
+  board->moveWest(cit);
 }
 
-void Worker::right(Citizen* cit) {}
+void Worker::right(std::shared_ptr<BaseEntity> cit) {
+  board->moveEast(cit);
+}
 
-void Worker::up(Citizen* cit) {}
+void Worker::up(std::shared_ptr<BaseEntity> cit) {
+  board->moveNorth(cit);
+}
 
-void Worker::down(Citizen* cit) {}
+void Worker::down(std::shared_ptr<BaseEntity> cit) {
+  board->moveSouth(cit);
+}

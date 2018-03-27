@@ -2,13 +2,14 @@
 
 Encounter::Encounter() {}
 
-void Encounter::talk(Citizen* c1, Citizen* c2) {
+void Encounter::talk(std::shared_ptr<Citizen> citizen1,
+                     std::shared_ptr<Citizen> citizen2) {
   switch (rand() % 2) {
     case 0:
-      c1->setParty(c2->getParty());
+      citizen1->setParty(citizen2->getParty());
       break;
     case 1:
-      c2->setParty(c1->getParty());
+      citizen2->setParty(citizen1->getParty());
       break;
   }
 }

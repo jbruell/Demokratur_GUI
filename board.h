@@ -47,7 +47,6 @@ class Board : public QObject {
         int talkMode);
   ~Board();
   void setParties(int share1, int share2, int share3, int size);
-  void prepareEncounter(int talkMode);
   void setXDim(int x);
   void setYDim(int y);
   int getXDim();
@@ -69,6 +68,7 @@ class Board : public QObject {
   void moveSouth(std::shared_ptr<BaseEntity> citizen);
   std::shared_ptr<Position> getPosition(int index);
   std::vector<std::shared_ptr<BaseEntity>>* getBaseEntities();
+  void initEncounter(std::shared_ptr<BaseEntity> citizen);
 };
 
 #endif  // BOARD_H

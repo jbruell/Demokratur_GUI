@@ -2,14 +2,15 @@
 #define ENCOUNTER_H
 
 #include <Windows.h>
+#include <citizen.h>
 #include <time.h>
 #include <iostream>
-#include "citizen.h"
 
 class Encounter {
  public:
   Encounter();
-  void talk(Citizen*, Citizen*);
+  void talk(std::shared_ptr<Citizen> citizen1,
+            std::shared_ptr<Citizen> citizen2);
 };
 
 #endif  // ENCOUNTER_H

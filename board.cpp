@@ -14,7 +14,7 @@ Board::Board(int x,
   if (share1 + share2 + share3 + share4 != 100) {
     throw std::invalid_argument("Shares do not add up to 100 percent");
   }
-  // encounter = new Encounter();
+  encounter = new Encounter();
 
   xDim = x;
   yDim = y;
@@ -80,7 +80,7 @@ void Board::initPositions() {
 
 void Board::initCitizens() {
   for (int i = 0; i < 10; i++) {
-    std::shared_ptr<Citizen> cit(new Citizen(0));
+    std::shared_ptr<Citizen> cit(new Citizen(rand() % 4));
     entities.push_back(std::move(cit));
     updatePos(entities.at(i), positions.at(10 * i));
     // updatePos(cit, positions.at(10 * i));
@@ -90,7 +90,7 @@ void Board::initCitizens() {
 void Board::moveWest(std::shared_ptr<BaseEntity> citizen) {
   std::shared_ptr<Position> pos = citizen->getPosition();
   pos->setBaseEntity(NULL);
-  updatePos(citizen, pos->getWest());
+  updatePos(citizen, pos->getWest());  // TODO check if occupied
 }
 void Board::moveEast(std::shared_ptr<BaseEntity> citizen) {
   std::shared_ptr<Position> pos = citizen->getPosition();
@@ -143,45 +143,22 @@ void Board::setParties(int share1, int share2, int share3, int size) {
   }
 }
 
-void Board::prepareEncounter(int talkMode) {
-  int size = xDim * yDim;
-  int index = rand() % size;
-  Citizen* c1 = &citizens[index];
-  Citizen* c2;
-  switch (talkMode) {
-    case 0:
-      switch (rand() % 4) {
-        case 0:
-          if (index - xDim < 0) {
-            c2 = &citizens[size - 1 + index - xDim];
-          } else {
-            c2 = &citizens[index - xDim];
-          }
-          break;
-        case 1:
-          if (index + xDim >= size) {
-            c2 = &citizens[index % xDim];
-          } else {
-            c2 = &citizens[index + xDim];
-          }
-          break;
-        case 2:
-          if (index % xDim == 0) {
-            c2 = &citizens[index + xDim - 1];
-          } else {
-            c2 = &citizens[index - 1];
-          }
-          break;
-        case 3:
-          if (index % xDim == xDim - 1) {
-            c2 = &citizens[index - xDim + 1];
-          } else {
-            c2 = &citizens[index + 1];
-          }
-          break;
-      }
-  }
-  encounter->talk(c1, c2);
+void Board::initEncounter(std::shared_ptr<BaseEntity> citizen) {
+  //  std::shared_ptr<Position> pos = citizen->getPosition();
+  //  // TODO Interface für jede Eigenschaft ( zb Movable, Talkable, etc)
+  //  std::shared_ptr<BaseEntity> neighbour = NULL;
+  //  if (pos->getNorth()->getBaseEntity() != NULL) {
+  //    neighbour = pos->getNorth()->getBaseEntity();
+  //  } else if (pos->getSouth()->getBaseEntity() != NULL) {
+  //    neighbour = pos->getSouth()->getBaseEntity();
+  //  } else if (pos->getEast()->getBaseEntity() != NULL) {
+  //    neighbour = pos->getEast()->getBaseEntity();
+  //  } else if (pos->getWest()->getBaseEntity() != NULL) {
+  //    neighbour = pos->getWest()->getBaseEntity();
+  //  }
+  //  if (neighbour != NULL && neighbour->isCitizen()) {
+  //    encounter->talk(citizen, casted_neighbour);
+  //  }
 }
 
 bool Board::isDictatorship() {

@@ -5,7 +5,8 @@ Citizen::Citizen() {
 }
 
 Citizen::Citizen(int pParty) {
-  party = pParty;
+  setParty(pParty);
+  setCitizen(true);
 }
 
 Citizen::~Citizen() {}
@@ -16,4 +17,13 @@ int Citizen::getParty() {
 
 void Citizen::setParty(int pParty) {
   party = pParty;
+  if (party == 0) {
+    setColor(Qt::red);
+  } else if (party == 1) {
+    setColor(Qt::yellow);
+  } else if (party == 2) {
+    setColor(Qt::green);
+  } else if (party == 3) {
+    setColor(Qt::cyan);
+  }
 }

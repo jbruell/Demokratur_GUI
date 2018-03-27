@@ -81,7 +81,8 @@ void Dialog::handleStartButton() {
   int x = lineEdits[0]->text().toInt();
   int y = lineEdits[1]->text().toInt();
 
-  board->reset(x, y, 25, 25, 25, 25, 0);
+  // board->reset(x, y, 25, 25, 25, 25, 0);
+  // TODO drittes textfeld -> anzahl pers, fix buttons
 
   thread->start();
   buttons[0]->setEnabled(false);
@@ -127,6 +128,7 @@ void Dialog::paintEvent(QPaintEvent*) {
     QRect rect = QRect((pos->getX() * oneWidth) + x,
                        (pos->getY() * oneHeight) + y, oneWidth, oneHeight);
     painter.setPen(QPen(Qt::gray, 2));
-    painter.fillRect(rect, Qt::red);
+    painter.drawRect(rect);
+    painter.fillRect(rect, entity->getColor());
   }
 }
