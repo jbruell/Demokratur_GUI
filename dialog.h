@@ -33,6 +33,7 @@ class Dialog : public QDialog {
   void createVillageArea();
   void handleStartButton();
   void handleStopButton();
+  void handlePauseButton();
 
   Board* board;
 
@@ -40,13 +41,13 @@ class Dialog : public QDialog {
   QGroupBox* villageGroupBox;
 
   QLabel* labels;
-  QPushButton* buttons[2];
-  QLineEdit* lineEdits[2];
-
-  QAction* exitAction;
+  QPushButton* buttons[3];
+  QLineEdit* lineEdits[3];
 
   QThread* thread;
   Worker* worker;
+
+  bool reset;
 
  protected:
   void paintEvent(QPaintEvent*);

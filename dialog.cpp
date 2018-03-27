@@ -2,6 +2,7 @@
 
 Dialog::Dialog() {
   board = new Board(15, 15, 50);
+  reset = false;
   createHorizontalGroupBox();
   createVillageArea();
 
@@ -18,10 +19,8 @@ Dialog::~Dialog() {
   delete horizontalGroupBox;
   delete villageGroupBox;
   delete labels;
-  delete[] buttons[2];
-  delete[] lineEdits[2];
-
-  delete[] exitAction;
+  delete[] buttons[3];
+  delete[] lineEdits[3];
 
   delete thread;
   delete worker;
@@ -47,6 +46,10 @@ void Dialog::createHorizontalGroupBox() {
   lineEdits[1]->setText("15");
   layout->addWidget(lineEdits[1]);
 
+  lineEdits[2] = new QLineEdit;
+  lineEdits[2]->setText("50");
+  layout->addWidget(lineEdits[2]);
+
   thread = new QThread;
   worker = new Worker(board, 1000000000);
   worker->moveToThread(thread);
@@ -69,6 +72,12 @@ void Dialog::createHorizontalGroupBox() {
   layout->addWidget(buttons[1]);
   buttons[1]->setEnabled(false);
 
+  buttons[2] = new QPushButton("Pause");
+  QObject::connect(buttons[2], &QPushButton::clicked,
+                   [this] { handlePauseButton(); });
+  layout->addWidget(buttons[2]);
+  buttons[2]->setEnabled(false);
+
   horizontalGroupBox->setLayout(layout);
   horizontalGroupBox->setFixedHeight(58);
 }
@@ -82,21 +91,44 @@ void Dialog::createVillageArea() {
 void Dialog::handleStartButton() {
   int x = lineEdits[0]->text().toInt();
   int y = lineEdits[1]->text().toInt();
+  int cit = lineEdits[2]->text().toInt();
 
-  board->reset(x, y, 50);
-  // TODO drittes textfeld -> anzahl pers, fix buttons
+  if (reset) {
+    board->reset(x, y, cit);
+  }
 
   emit start();
   buttons[0]->setEnabled(false);
   buttons[1]->setEnabled(true);
+  buttons[2]->setEnabled(true);
+
+  lineEdits[0]->setEnabled(false);
+  lineEdits[1]->setEnabled(false);
+  lineEdits[2]->setEnabled(false);
 }
 
 void Dialog::handleStopButton() {
-  // thread->requestInterruption();
-  // thread->quit();
+  reset = true;
   emit stop();
   buttons[0]->setEnabled(true);
   buttons[1]->setEnabled(false);
+  buttons[2]->setEnabled(false);
+
+  lineEdits[0]->setEnabled(true);
+  lineEdits[1]->setEnabled(true);
+  lineEdits[2]->setEnabled(true);
+}
+
+void Dialog::handlePauseButton() {
+  reset = false;
+  emit stop();
+  buttons[0]->setEnabled(true);
+  buttons[1]->setEnabled(false);
+  buttons[2]->setEnabled(false);
+
+  lineEdits[0]->setEnabled(false);
+  lineEdits[1]->setEnabled(false);
+  lineEdits[2]->setEnabled(false);
 }
 
 void Dialog::finished() {
