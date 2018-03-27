@@ -69,9 +69,14 @@ void Board::initPositions() {
 void Board::initCitizens(int persons) {
   entities.clear();
   for (int i = 0; i < persons; i++) {
-    std::shared_ptr<Citizen> cit(new Citizen(i % 4));
-    entities.push_back(std::move(cit));
-    updatePos(entities.at(i), positions.at(i));
+    int temp = rand() % size;
+    if (!positions.at(temp)->isOccupied()) {
+      std::shared_ptr<Citizen> cit(new Citizen(i % 4));
+      entities.push_back(std::move(cit));
+      updatePos(entities.at(i), positions.at(temp));
+    } else {
+      i--;
+    }
   }
 }
 
