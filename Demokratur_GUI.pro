@@ -29,7 +29,8 @@ HEADERS     = board.h \
     worker.h \
     position.h \
     baseentity.h \
-    headers.h
+    headers.h \
+    barrier.h
 SOURCES     = board.cpp \
     citizen.cpp \
     dialog.cpp \
@@ -37,5 +38,6 @@ SOURCES     = board.cpp \
     main.cpp \
     worker.cpp \
     position.cpp \
-    baseentity.cpp
+    baseentity.cpp \
+    barrier.cpp
 

@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include <Windows.h>
+#include <barrier.h>
 #include <baseentity.h>
 #include <citizen.h>
 #include <encounter.h>
@@ -26,6 +27,7 @@ class Board : public QObject {
   int size;
   void initPositions();
   void initCitizens(int persons);
+  void initBarriers();
   void printVillage();
   void updatePos(std::shared_ptr<BaseEntity> cit,
                  std::shared_ptr<Position> pos);

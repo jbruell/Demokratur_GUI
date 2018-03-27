@@ -27,19 +27,21 @@ void Worker::setBoard(Board* pBoard) {
 void Worker::process() {
   std::vector<std::shared_ptr<BaseEntity>>* entities = board->getBaseEntities();
   for (std::shared_ptr<BaseEntity> entity : *entities) {
-    switch (rand() % 4) {
-      case 0:
-        left(entity);
-        break;
-      case 1:
-        right(entity);
-        break;
-      case 2:
-        up(entity);
-        break;
-      case 3:
-        down(entity);
-        break;
+    if (entity->isCitizen()) {
+      switch (rand() % 4) {
+        case 0:
+          left(entity);
+          break;
+        case 1:
+          right(entity);
+          break;
+        case 2:
+          up(entity);
+          break;
+        case 3:
+          down(entity);
+          break;
+      }
     }
   }
   board->resetTalkingStatus();

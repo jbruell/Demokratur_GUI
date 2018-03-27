@@ -15,7 +15,9 @@ Board::Board(int x, int y, int persons) {
   size = x * y;
 
   // TODO init vectors & update destructor
+  entities.clear();
   initPositions();
+  initBarriers();
   initCitizens(persons);
 }
 
@@ -67,8 +69,7 @@ void Board::initPositions() {
 }
 
 void Board::initCitizens(int persons) {
-  entities.clear();
-  for (int i = 0; i < persons; i++) {
+  for (int i = entities.size(); i < persons; i++) {
     int temp = rand() % size;
     if (!positions.at(temp)->isOccupied()) {
       std::shared_ptr<Citizen> cit(new Citizen(i % 4));
@@ -77,6 +78,16 @@ void Board::initCitizens(int persons) {
     } else {
       i--;
     }
+  }
+}
+
+void Board::initBarriers() {
+  int indices[16] = {64,  65,  69,  70,  79,  80,  84,  85,
+                     139, 140, 144, 145, 154, 155, 159, 160};
+  for (int i = 0; i < 16; i++) {
+    std::shared_ptr<Barrier> barrier(new Barrier());
+    entities.push_back(std::move(barrier));
+    updatePos(entities.at(i), positions.at(indices[i]));
   }
 }
 
