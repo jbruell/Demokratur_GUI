@@ -15,8 +15,13 @@ int Position::getY() {
   return y;
 }
 
+bool Position::isOccupied() {
+  return occupied;
+}
+
 void Position::setBaseEntity(std::shared_ptr<BaseEntity> baseEntity) {
   be = baseEntity;
+  occupied = baseEntity != NULL;
 }
 
 std::shared_ptr<BaseEntity> Position::getBaseEntity() {

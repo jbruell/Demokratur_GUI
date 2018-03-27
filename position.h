@@ -10,6 +10,7 @@ class Position {
  private:
   int x;
   int y;
+  bool occupied;
   std::shared_ptr<BaseEntity> be;
   std::shared_ptr<Position> north;
   std::shared_ptr<Position> south;
@@ -21,6 +22,7 @@ class Position {
   ~Position();
   int getX();
   int getY();
+  bool isOccupied();
   std::shared_ptr<BaseEntity> getBaseEntity();
   void setBaseEntity(std::shared_ptr<BaseEntity> baseEntity);
   std::shared_ptr<Position> getNorth();
