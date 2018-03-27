@@ -7,6 +7,7 @@ Citizen::Citizen() {
 Citizen::Citizen(int pParty) {
   setParty(pParty);
   setCitizen(true);
+  currentlyTalking = false;
 }
 
 Citizen::~Citizen() {}
@@ -26,4 +27,12 @@ void Citizen::setParty(int pParty) {
   } else if (party == 3) {
     setColor(Qt::cyan);
   }
+}
+
+bool Citizen::isCurrentlyTalking() {
+  return currentlyTalking;
+}
+
+void Citizen::setCurrentlyTalking(bool talking) {
+  currentlyTalking = talking;
 }

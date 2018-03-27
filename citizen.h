@@ -5,6 +5,7 @@
 
 class Citizen : public BaseEntity {
   int party;
+  bool currentlyTalking;
 
  public:
   Citizen();
@@ -12,6 +13,8 @@ class Citizen : public BaseEntity {
   ~Citizen();
   int getParty();
   void setParty(int);
+  bool isCurrentlyTalking();
+  void setCurrentlyTalking(bool talking);
 };
 
 #endif  // CITIZEN_H
