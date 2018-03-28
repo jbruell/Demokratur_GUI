@@ -3,6 +3,7 @@
 Position::Position(int xCoordinate, int yCoordinate) {
   x = xCoordinate;
   y = yCoordinate;
+  occupied = false;
 }
 
 Position::~Position() {}

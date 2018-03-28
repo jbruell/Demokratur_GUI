@@ -155,14 +155,8 @@ void Dialog::paintEvent(QPaintEvent*) {
               (pos->getY() * oneHeight) + yPadding, oneWidth, oneHeight);
     painter.setPen(QPen(Qt::gray, 2));
     painter.drawRect(rect);
-    std::shared_ptr<BaseEntity> entity = pos->getBaseEntity();
-    if (pos->isOccupied() && entity != NULL) {
-      QBrush brush(entity->getColor(), Qt::DiagCrossPattern);
-      if (entity->isCitizen()) {
-        painter.fillRect(rect, entity->getColor());
-      } else {
-        painter.fillRect(rect, brush);
-      }
+    if (pos->isOccupied()) {
+      painter.fillRect(rect, *pos->getBaseEntity()->getBrush());
     } else {
       painter.fillRect(rect, Qt::white);
     }

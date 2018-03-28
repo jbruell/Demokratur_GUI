@@ -12,12 +12,12 @@ std::shared_ptr<Position> BaseEntity::getPosition() {
   return pos;
 }
 
-void BaseEntity::setColor(QColor col) {
-  color = col;
+void BaseEntity::setBrush(QBrush* pBrush) {
+  brush = pBrush;
 }
 
-QColor BaseEntity::getColor() {
-  return color;
+QBrush* BaseEntity::getBrush() {
+  return brush;
 }
 
 bool BaseEntity::isCitizen() {

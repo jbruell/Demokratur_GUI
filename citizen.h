@@ -8,7 +8,6 @@ class Citizen : public BaseEntity {
   bool currentlyTalking;
 
  public:
-  Citizen();
   Citizen(int);
   ~Citizen();
   int getParty();

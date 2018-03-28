@@ -1,6 +1,7 @@
 #include "barrier.h"
 
 Barrier::Barrier() {
-  setColor(Qt::gray);
+  QBrush* brush = new QBrush(Qt::gray, Qt::DiagCrossPattern);
+  setBrush(brush);
   setCitizen(false);
 }

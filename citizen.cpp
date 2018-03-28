@@ -1,10 +1,8 @@
 #include "citizen.h"
 
-Citizen::Citizen() {
-  party = 1;
-}
-
 Citizen::Citizen(int pParty) {
+  QBrush* brush = new QBrush(Qt::SolidPattern);
+  setBrush(brush);
   setParty(pParty);
   setCitizen(true);
   currentlyTalking = false;
@@ -19,13 +17,13 @@ int Citizen::getParty() {
 void Citizen::setParty(int pParty) {
   party = pParty;
   if (party == 0) {
-    setColor(Qt::red);
+    getBrush()->setColor(Qt::red);
   } else if (party == 1) {
-    setColor(Qt::yellow);
+    getBrush()->setColor(Qt::yellow);
   } else if (party == 2) {
-    setColor(Qt::green);
+    getBrush()->setColor(Qt::green);
   } else if (party == 3) {
-    setColor(Qt::cyan);
+    getBrush()->setColor(Qt::cyan);
   }
 }
 
