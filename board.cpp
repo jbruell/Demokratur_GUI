@@ -217,6 +217,10 @@ int Board::getYDim() {
   return yDim;
 }
 
+int Board::getSize() {
+  return size;
+}
+
 void Board::reset(int x, int y, int persons) {
   if (persons > x * y) {
     throw std::invalid_argument("Village is too small for Citizens");
@@ -226,8 +230,10 @@ void Board::reset(int x, int y, int persons) {
   yDim = y;
   size = x * y;
 
-  // TODO init vectors & update destructor
+  entities.clear();
+  positions.clear();
   initPositions();
+  initBarriers();
   initCitizens(persons);
 }
 

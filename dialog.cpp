@@ -141,30 +141,31 @@ void Dialog::repaint() {
 }
 
 void Dialog::paintEvent(QPaintEvent*) {
-  int x = 20;
-  int y = 90;
-  double oneWidth = (size().width() - 2 * x) / (double)board->getXDim();
-  double oneHeight = (size().height() - y - 20) / (double)board->getYDim();
+  int xPadding = 20;
+  int yPadding = 90;
+  double oneWidth = (size().width() - 2 * xPadding) / (double)board->getXDim();
+  double oneHeight =
+      (size().height() - yPadding - 20) / (double)board->getYDim();
   QPainter painter(this);
 
-  for (int i = 0; i < board->getYDim(); i++) {
-    for (int j = 0; j < board->getXDim(); j++) {
-      QRect rect =
-          QRect((j * oneWidth) + x, (i * oneHeight) + y, oneWidth, oneHeight);
-      painter.setPen(QPen(Qt::gray, 2));
-      painter.drawRect(rect);
-      painter.fillRect(rect, Qt::white);
-    }
-  }
-  std::vector<std::shared_ptr<BaseEntity>>* entities = board->getBaseEntities();
-  for (std::shared_ptr<BaseEntity> entity : *entities) {
-    std::shared_ptr<Position> pos = entity->getPosition();
-
-    QRect rect = QRect((pos->getX() * oneWidth) + x,
-                       (pos->getY() * oneHeight) + y, oneWidth, oneHeight);
+  for (int i = 0; i < board->getSize(); i++) {
+    std::shared_ptr<Position> pos = board->getPosition(i);
+    QRect rect =
+        QRect((pos->getX() * oneWidth) + xPadding,
+              (pos->getY() * oneHeight) + yPadding, oneWidth, oneHeight);
     painter.setPen(QPen(Qt::gray, 2));
     painter.drawRect(rect);
-    painter.fillRect(rect, entity->getColor());
+    std::shared_ptr<BaseEntity> entity = pos->getBaseEntity();
+    if (pos->isOccupied() && entity != NULL) {
+      QBrush brush(entity->getColor(), Qt::DiagCrossPattern);
+      if (entity->isCitizen()) {
+        painter.fillRect(rect, entity->getColor());
+      } else {
+        painter.fillRect(rect, brush);
+      }
+    } else {
+      painter.fillRect(rect, Qt::white);
+    }
   }
 }
 

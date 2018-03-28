@@ -3,6 +3,7 @@
 
 #include <board.h>
 #include <worker.h>
+#include <QBrush>
 #include <QDialog>
 #include <QObject>
 #include <QThread>

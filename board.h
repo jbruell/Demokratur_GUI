@@ -44,6 +44,7 @@ class Board : public QObject {
   void setYDim(int y);
   int getXDim();
   int getYDim();
+  int getSize();
   void reset(int x, int y, int persons);
   bool isDictatorship();
 
