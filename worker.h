@@ -20,15 +20,15 @@ class Worker : public QObject {
   ~Worker();
 
  public slots:
-  void process();
-  void setBoard(Board* pBoard);
   void start();
   void stop();
+  void setBoard(Board* pBoard);
+  void process();
 
-  void left(std::shared_ptr<BaseEntity> cit);
-  void right(std::shared_ptr<BaseEntity> cit);
   void up(std::shared_ptr<BaseEntity> cit);
   void down(std::shared_ptr<BaseEntity> cit);
+  void left(std::shared_ptr<BaseEntity> cit);
+  void right(std::shared_ptr<BaseEntity> cit);
 
  signals:
   void finished();

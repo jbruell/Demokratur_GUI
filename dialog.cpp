@@ -1,5 +1,7 @@
 #include <dialog.h>
 
+// public methods
+
 Dialog::Dialog() {
   board = new Board(15, 15, 50);
   reset = false;
@@ -16,6 +18,7 @@ Dialog::Dialog() {
 
 Dialog::~Dialog() {
   delete board;
+  // TODO add parents oder delete
   // delete horizontalGroupBox;
   // delete villageGroupBox;
   // delete labels;
@@ -26,13 +29,7 @@ Dialog::~Dialog() {
   delete worker;
 }
 
-void Dialog::setLabels(QLabel* pLabels) {
-  labels = pLabels;
-}
-
-QLabel* Dialog::getLabels() {
-  return labels;
-}
+// private methods
 
 void Dialog::createHorizontalGroupBox() {
   horizontalGroupBox = new QGroupBox("Eingabe:");
@@ -131,6 +128,8 @@ void Dialog::handlePauseButton() {
   lineEdits[2]->setEnabled(false);
 }
 
+// public slots
+
 void Dialog::finished() {
   std::cout << "finished" << std::endl;
   handleStopButton();
@@ -139,6 +138,8 @@ void Dialog::finished() {
 void Dialog::repaint() {
   update();
 }
+
+// overridden methods
 
 void Dialog::paintEvent(QPaintEvent*) {
   int xPadding = 20;

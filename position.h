@@ -26,12 +26,12 @@ class Position {
   std::shared_ptr<BaseEntity> getBaseEntity();
   void setBaseEntity(std::shared_ptr<BaseEntity> baseEntity);
   std::shared_ptr<Position> getNorth();
-  std::shared_ptr<Position> getSouth();
-  std::shared_ptr<Position> getEast();
-  std::shared_ptr<Position> getWest();
   void setNorth(std::shared_ptr<Position> pos);
+  std::shared_ptr<Position> getSouth();
   void setSouth(std::shared_ptr<Position> pos);
+  std::shared_ptr<Position> getEast();
   void setEast(std::shared_ptr<Position> pos);
+  std::shared_ptr<Position> getWest();
   void setWest(std::shared_ptr<Position> pos);
 };
 

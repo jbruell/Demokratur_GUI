@@ -1,5 +1,7 @@
 #include "citizen.h"
 
+// public methods
+
 Citizen::Citizen(int pParty) {
   QBrush* brush = new QBrush(Qt::SolidPattern);
   setBrush(brush);

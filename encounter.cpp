@@ -1,6 +1,10 @@
 #include "encounter.h"
 
+// public methods
+
 Encounter::Encounter() {}
+
+Encounter::~Encounter() {}
 
 void Encounter::talk(std::shared_ptr<Citizen> citizen1,
                      std::shared_ptr<Citizen> citizen2) {

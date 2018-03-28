@@ -1,5 +1,7 @@
 #include "worker.h"
 
+// public methods
+
 Worker::Worker(Board* pBoard, int pIterations) {
   board = pBoard;
   iterations = pIterations;
@@ -10,6 +12,8 @@ Worker::Worker(Board* pBoard, int pIterations) {
 }
 
 Worker::~Worker() {}
+
+// public slots
 
 void Worker::start() {
   timer->start(100);
@@ -54,18 +58,18 @@ void Worker::process() {
   }
 }
 
-void Worker::left(std::shared_ptr<BaseEntity> cit) {
-  board->moveWest(cit);
-}
-
-void Worker::right(std::shared_ptr<BaseEntity> cit) {
-  board->moveEast(cit);
-}
-
 void Worker::up(std::shared_ptr<BaseEntity> cit) {
   board->moveNorth(cit);
 }
 
 void Worker::down(std::shared_ptr<BaseEntity> cit) {
   board->moveSouth(cit);
+}
+
+void Worker::left(std::shared_ptr<BaseEntity> cit) {
+  board->moveWest(cit);
+}
+
+void Worker::right(std::shared_ptr<BaseEntity> cit) {
+  board->moveEast(cit);
 }

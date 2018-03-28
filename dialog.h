@@ -5,7 +5,6 @@
 #include <worker.h>
 #include <QBrush>
 #include <QFrame>
-#include <QObject>
 #include <QThread>
 #include <QtWidgets>
 #include <iostream>
@@ -23,12 +22,6 @@ class QTextEdit;
 class Dialog : public QFrame {
   Q_OBJECT
 
- public:
-  Dialog();
-  ~Dialog();
-  QLabel* getLabels();
-  void setLabels(QLabel* pLabels);
-
  private:
   void createHorizontalGroupBox();
   void createVillageArea();
@@ -37,18 +30,20 @@ class Dialog : public QFrame {
   void handlePauseButton();
 
   Board* board;
+  QThread* thread;
+  Worker* worker;
 
   QGroupBox* horizontalGroupBox;
   QGroupBox* villageGroupBox;
 
-  QLabel* labels;
   QPushButton* buttons[3];
   QLineEdit* lineEdits[3];
 
-  QThread* thread;
-  Worker* worker;
-
   bool reset;
+
+ public:
+  Dialog();
+  ~Dialog();
 
  protected:
   void paintEvent(QPaintEvent*);

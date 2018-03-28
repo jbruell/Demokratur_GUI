@@ -1,8 +1,6 @@
 #include <board.h>
 
-Board::Board() {
-  // new Board(10, 10, 25, 25 ,25, 25, 0);
-}
+// public methods
 
 Board::Board(int x, int y, int persons) {
   if (persons > x * y) {
@@ -24,6 +22,112 @@ Board::Board(int x, int y, int persons) {
 Board::~Board() {
   delete encounter;
 }
+
+int Board::getXDim() {
+  return xDim;
+}
+
+void Board::setXDim(int x) {
+  xDim = x;
+}
+
+int Board::getYDim() {
+  return yDim;
+}
+
+void Board::setYDim(int y) {
+  yDim = y;
+}
+
+int Board::getSize() {
+  return size;
+}
+
+std::shared_ptr<Position> Board::getPosition(int index) {
+  return positions.at(index);
+}
+
+std::vector<std::shared_ptr<BaseEntity>>* Board::getBaseEntities() {
+  return &entities;
+}
+
+void Board::moveWest(std::shared_ptr<BaseEntity> citizen) {
+  std::shared_ptr<Position> pos = citizen->getPosition();
+  if (!pos->getWest()->isOccupied()) {
+    pos->setBaseEntity(NULL);
+    updatePos(citizen, pos->getWest());
+  }
+}
+
+void Board::moveEast(std::shared_ptr<BaseEntity> citizen) {
+  std::shared_ptr<Position> pos = citizen->getPosition();
+  if (!pos->getEast()->isOccupied()) {
+    pos->setBaseEntity(NULL);
+    updatePos(citizen, pos->getEast());
+  }
+}
+
+void Board::moveNorth(std::shared_ptr<BaseEntity> citizen) {
+  std::shared_ptr<Position> pos = citizen->getPosition();
+  if (!pos->getNorth()->isOccupied()) {
+    pos->setBaseEntity(NULL);
+    updatePos(citizen, pos->getNorth());
+  }
+}
+
+void Board::moveSouth(std::shared_ptr<BaseEntity> citizen) {
+  std::shared_ptr<Position> pos = citizen->getPosition();
+  if (!pos->getSouth()->isOccupied()) {
+    pos->setBaseEntity(NULL);
+    updatePos(citizen, pos->getSouth());
+  }
+}
+
+void Board::reset(int x, int y, int persons) {
+  if (persons > x * y) {
+    throw std::invalid_argument("Village is too small for Citizens");
+  }
+
+  xDim = x;
+  yDim = y;
+  size = x * y;
+
+  entities.clear();
+  positions.clear();
+  initPositions();
+  initBarriers();
+  initCitizens(persons);
+}
+
+void Board::resetTalkingStatus() {
+  for (std::shared_ptr<BaseEntity> entity : entities) {
+    if (entity->isCitizen()) {
+      std::static_pointer_cast<Citizen>(entity)->setCurrentlyTalking(false);
+    }
+  }
+}
+
+bool Board::isDictatorship() {
+  bool citizen = false;
+  int i = 0;
+  while (!citizen && i < entities.size()) {
+    citizen = entities.at(i)->isCitizen();
+    i++;
+  }
+  int party = std::static_pointer_cast<Citizen>(entities.at(i))->getParty();
+  while (i < entities.size()) {
+    if (entities.at(i)->isCitizen()) {
+      if (std::static_pointer_cast<Citizen>(entities.at(i))->getParty() !=
+          party) {
+        return false;
+      }
+    }
+    i++;
+  }
+  return true;
+}
+
+// private methods
 
 void Board::initPositions() {
   for (int i = 0; i < yDim; i++) {
@@ -91,48 +195,11 @@ void Board::initBarriers() {
   }
 }
 
-void Board::moveWest(std::shared_ptr<BaseEntity> citizen) {
-  std::shared_ptr<Position> pos = citizen->getPosition();
-  if (!pos->getWest()->isOccupied()) {
-    pos->setBaseEntity(NULL);
-    updatePos(citizen, pos->getWest());
-  }
-}
-void Board::moveEast(std::shared_ptr<BaseEntity> citizen) {
-  std::shared_ptr<Position> pos = citizen->getPosition();
-  if (!pos->getEast()->isOccupied()) {
-    pos->setBaseEntity(NULL);
-    updatePos(citizen, pos->getEast());
-  }
-}
-void Board::moveNorth(std::shared_ptr<BaseEntity> citizen) {
-  std::shared_ptr<Position> pos = citizen->getPosition();
-  if (!pos->getNorth()->isOccupied()) {
-    pos->setBaseEntity(NULL);
-    updatePos(citizen, pos->getNorth());
-  }
-}
-void Board::moveSouth(std::shared_ptr<BaseEntity> citizen) {
-  std::shared_ptr<Position> pos = citizen->getPosition();
-  if (!pos->getSouth()->isOccupied()) {
-    pos->setBaseEntity(NULL);
-    updatePos(citizen, pos->getSouth());
-  }
-}
-
 void Board::updatePos(std::shared_ptr<BaseEntity> cit,
                       std::shared_ptr<Position> pos) {
   cit->setPosition(pos);
   pos->setBaseEntity(cit);
   initEncounter(cit);
-}
-
-std::shared_ptr<Position> Board::getPosition(int index) {
-  return positions.at(index);
-}
-
-std::vector<std::shared_ptr<BaseEntity>>* Board::getBaseEntities() {
-  return &entities;
 }
 
 void Board::initEncounter(std::shared_ptr<BaseEntity> citizen) {
@@ -174,71 +241,3 @@ void Board::initEncounter(std::shared_ptr<BaseEntity> citizen) {
                     std::static_pointer_cast<Citizen>(neighbour));
   }
 }
-
-void Board::resetTalkingStatus() {
-  for (std::shared_ptr<BaseEntity> entity : entities) {
-    if (entity->isCitizen()) {
-      std::static_pointer_cast<Citizen>(entity)->setCurrentlyTalking(false);
-    }
-  }
-}
-
-bool Board::isDictatorship() {
-  bool citizen = false;
-  int i;
-  for (i = 0; !citizen && i < entities.size(); i++) {
-    citizen = entities.at(i)->isCitizen();
-  }
-  int party = std::static_pointer_cast<Citizen>(entities.at(i))->getParty();
-  for (; i < entities.size(); i++) {
-    if (entities.at(i)->isCitizen()) {
-      if (std::static_pointer_cast<Citizen>(entities.at(i))->getParty() !=
-          party) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-void Board::setXDim(int x) {
-  xDim = x;
-}
-
-void Board::setYDim(int y) {
-  yDim = y;
-}
-
-int Board::getXDim() {
-  return xDim;
-}
-
-int Board::getYDim() {
-  return yDim;
-}
-
-int Board::getSize() {
-  return size;
-}
-
-void Board::reset(int x, int y, int persons) {
-  if (persons > x * y) {
-    throw std::invalid_argument("Village is too small for Citizens");
-  }
-
-  xDim = x;
-  yDim = y;
-  size = x * y;
-
-  entities.clear();
-  positions.clear();
-  initPositions();
-  initBarriers();
-  initCitizens(persons);
-}
-
-namespace talk_modes {
-const unsigned int north_south_east_west = 0;
-const unsigned int diagonal = 1;
-const unsigned int all = 2;
-}  // namespace talk_modes

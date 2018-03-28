@@ -3,7 +3,6 @@
 
 #include <headers.h>
 #include <QBrush>
-#include <QColor>
 #include <memory>
 
 class Position;
@@ -17,10 +16,10 @@ class BaseEntity {
  public:
   BaseEntity();
   ~BaseEntity();
-  void setPosition(std::shared_ptr<Position> position);
   std::shared_ptr<Position> getPosition();
-  void setBrush(QBrush* pBrush);
+  void setPosition(std::shared_ptr<Position> position);
   QBrush* getBrush();
+  void setBrush(QBrush* pBrush);
   bool isCitizen();
   void setCitizen(bool cit);
 };  // TODO interface statt base class
