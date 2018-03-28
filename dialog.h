@@ -4,7 +4,7 @@
 #include <board.h>
 #include <worker.h>
 #include <QBrush>
-#include <QDialog>
+#include <QFrame>
 #include <QObject>
 #include <QThread>
 #include <QtWidgets>
@@ -20,7 +20,7 @@ class QMenuBar;
 class QPushButton;
 class QTextEdit;
 
-class Dialog : public QDialog {
+class Dialog : public QFrame {
   Q_OBJECT
 
  public:
