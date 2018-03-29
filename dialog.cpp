@@ -8,7 +8,7 @@ Dialog::Dialog() {
   createHorizontalGroupBox();
   createVillageArea();
 
-  QVBoxLayout* mainLayout = new QVBoxLayout;
+  QVBoxLayout* mainLayout = new QVBoxLayout(this);
   mainLayout->addWidget(horizontalGroupBox);
   mainLayout->addWidget(villageGroupBox);
   setLayout(mainLayout);
@@ -18,13 +18,6 @@ Dialog::Dialog() {
 
 Dialog::~Dialog() {
   delete board;
-  // TODO add parents oder delete
-  // delete horizontalGroupBox;
-  // delete villageGroupBox;
-  // delete labels;
-  // delete[] buttons[3];
-  // delete[] lineEdits[3];
-
   delete thread;
   delete worker;
 }
@@ -32,18 +25,18 @@ Dialog::~Dialog() {
 // private methods
 
 void Dialog::createHorizontalGroupBox() {
-  horizontalGroupBox = new QGroupBox("Eingabe:");
-  QHBoxLayout* layout = new QHBoxLayout;
+  horizontalGroupBox = new QGroupBox("Eingabe:", this);
+  QHBoxLayout* layout = new QHBoxLayout(this);
 
-  lineEdits[0] = new QLineEdit;
+  lineEdits[0] = new QLineEdit(this);
   lineEdits[0]->setText("15");
   layout->addWidget(lineEdits[0]);
 
-  lineEdits[1] = new QLineEdit;
+  lineEdits[1] = new QLineEdit(this);
   lineEdits[1]->setText("15");
   layout->addWidget(lineEdits[1]);
 
-  lineEdits[2] = new QLineEdit;
+  lineEdits[2] = new QLineEdit(this);
   lineEdits[2]->setText("50");
   layout->addWidget(lineEdits[2]);
 
@@ -58,18 +51,18 @@ void Dialog::createHorizontalGroupBox() {
   connect(this, SIGNAL(stop()), worker, SLOT(stop()));
   thread->start();
 
-  buttons[0] = new QPushButton("Start");
+  buttons[0] = new QPushButton("Start", this);
   QObject::connect(buttons[0], &QPushButton::clicked,
                    [this] { handleStartButton(); });
   layout->addWidget(buttons[0]);
 
-  buttons[1] = new QPushButton("Stop");
+  buttons[1] = new QPushButton("Stop", this);
   QObject::connect(buttons[1], &QPushButton::clicked,
                    [this] { handleStopButton(); });
   layout->addWidget(buttons[1]);
   buttons[1]->setEnabled(false);
 
-  buttons[2] = new QPushButton("Pause");
+  buttons[2] = new QPushButton("Pause", this);
   QObject::connect(buttons[2], &QPushButton::clicked,
                    [this] { handlePauseButton(); });
   layout->addWidget(buttons[2]);
@@ -80,7 +73,7 @@ void Dialog::createHorizontalGroupBox() {
 }
 
 void Dialog::createVillageArea() {
-  villageGroupBox = new QGroupBox("Dorf");
+  villageGroupBox = new QGroupBox("Dorf", this);
   villageGroupBox->setMinimumHeight(600);
   villageGroupBox->setMinimumWidth(600);
 }

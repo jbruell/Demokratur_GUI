@@ -12,7 +12,6 @@ Board::Board(int x, int y, int persons) {
   yDim = y;
   size = x * y;
 
-  // TODO init vectors & update destructor
   entities.clear();
   initPositions();
   initBarriers();
